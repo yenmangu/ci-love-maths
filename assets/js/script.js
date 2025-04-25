@@ -11,14 +11,28 @@ document.addEventListener('DOMContentLoaded', function () {
 				alert('You clicked Submit!');
 			} else {
 				let gameType = this.getAttribute('data-type');
-				alert(`You clicked ${gameType}`);
+				alert(generateOperand());
 			}
 		});
 	}
 });
 
+// How do we want to display the questions?
+// Generate two random operands betwen 1 and 25
+
+function generateOperand() {
+	return Math.floor(Math.random() * 25) + 1;
+}
+
 // Main game function
-function runGame() {}
+/**
+ * The main game "loop", called when the script is first loaded,
+ * and after the user's answer has been processed
+ */
+function runGame() {
+	let num1 = generateOperand();
+	let num2 = generateOperand();
+}
 
 // Check answer function
 function checkAnswer() {}
