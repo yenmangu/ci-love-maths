@@ -55,15 +55,12 @@ function runGame(gameType) {
 	// 		alert(`Unknown game type: ${gameType}`)
 	// }
 
-	document.getElementById('operand1').textContent = num1.toString();
-	document.getElementById('operand2').textContent = num2.toString();
-
 	if (gameType === 'addition') {
-		displayAdditionQuestion();
-	} else if (gameType === 'subtraction') {
-		displaySubtractQuestion();
+		displayAdditionQuestion(num1, num2);
+	} else if (gameType === 'subtract') {
+		displaySubtractQuestion(num1, num2);
 	} else if (gameType === 'multiply') {
-		displayMultiplyQuestion();
+		displayMultiplyQuestion(num1, num2);
 	} else if (gameType === 'division') {
 		displayDivisionQuestion();
 	} else {
@@ -123,6 +120,7 @@ function calculateCorrectAnswer() {
 		return [intOp1 * intOp2, 'multiply'];
 	} else if (operator === '\u00F7') {
 	} else if (operator === '-') {
+		return [intOp1 - intOp2, 'subtract'];
 	} else {
 		alert(`Unimplemented operator ${operator}`);
 		throw `Unimplemented operator ${operator}. Aborting!`;
@@ -151,16 +149,25 @@ function incrementWrongAnswer() {
 
 // Display questions
 // Using unicode to display correct symbols
-function displayAdditionQuestion() {
+function displayAdditionQuestion(operand1, operand2) {
+	document.getElementById('operand1').textContent = operand1.toString();
+	document.getElementById('operand2').textContent = operand2.toString();
 	document.getElementById('operator').textContent = '\u002B';
 }
 
-function displaySubtractQuestion() {
-	// document.getElementById('operator').textContent = '-';
+function displaySubtractQuestion(operand1, operand2) {
+	document.getElementById('operator').textContent = '-';
+	// put larger of two numbers as operand 1
+	document.getElementById('operand1').textContent =
+		operand1 > operand2 ? operand1 : operand2;
+	document.getElementById('operand2').textContent =
+		operand1 > operand2 ? operand2 : operand1;
 }
-function displayMultiplyQuestion() {
+function displayMultiplyQuestion(operand1, operand2) {
+	document.getElementById('operand1').textContent = operand1.toString();
+	document.getElementById('operand2').textContent = operand2.toString();
 	document.getElementById('operator').textContent = 'x';
 }
-function displayDivisionQuestion() {
+function displayDivisionQuestion(operand1, operand2) {
 	// document.getElementById('operator').textContent = '\u00F7';
 }
