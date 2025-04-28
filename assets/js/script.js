@@ -55,6 +55,7 @@ function runGame(gameType) {
 	console.log('game running');
 	let num1 = generateOperand();
 	let num2 = generateOperand();
+	console.log(`num1: ${num1}. num2: ${num2}`);
 
 	// I would use switch/case for this, but the walkthrough is suggesting if/else
 	// switch (gameType) {
@@ -71,8 +72,8 @@ function runGame(gameType) {
 		displaySubtractQuestion(num1, num2);
 	} else if (gameType === 'multiply') {
 		displayMultiplyQuestion(num1, num2);
-	} else if (gameType === 'division') {
-		displayDivisionQuestion();
+	} else if (gameType === 'divide') {
+		displayDivisionQuestion(num1, num2);
 	} else {
 		alert(`Unknown game type: ${gameType}`);
 		throw `Unknown game type: ${gameType}. Aborting`;
@@ -92,13 +93,15 @@ function checkAnswer() {
 	// from HTMLInputElement being a sub-type of HTMLElement
 	const userAnswer = parseInt(document.getElementById('answer-box')['value']);
 	let calculatedAnswer = calculateCorrectAnswer();
+	console.log('Correct answer array: ', calculatedAnswer);
+
 	let isCorrect = userAnswer === calculatedAnswer[0];
 	if (isCorrect) {
 		alert('Hey! You got it right! :D');
 		incrementScore();
 	} else {
 		alert(
-			`Awww... you answered ${userAnswer} which isnt quite correct. The correct answer was be ${calculatedAnswer[0]}!`
+			`Awww... you answered ${userAnswer} which isnt quite correct. The correct answer was ${calculatedAnswer[0]}!`
 		);
 		incrementWrongAnswer();
 	}
@@ -124,11 +127,13 @@ function calculateCorrectAnswer() {
 	}
 	let intOp1 = parseInt(operand1);
 	let intOp2 = parseInt(operand2);
+
 	if (operator === '+') {
 		return [intOp1 + intOp2, 'addition'];
 	} else if (operator === 'x') {
 		return [intOp1 * intOp2, 'multiply'];
 	} else if (operator === '\u00F7') {
+		return [intOp1 / intOp2, 'divide'];
 	} else if (operator === '-') {
 		return [intOp1 - intOp2, 'subtract'];
 	} else {
@@ -179,5 +184,24 @@ function displayMultiplyQuestion(operand1, operand2) {
 	document.getElementById('operator').textContent = 'x';
 }
 function displayDivisionQuestion(operand1, operand2) {
-	// document.getElementById('operator').textContent = '\u00F7';
+	// Using unicode value to display correct division symbol
+	document.getElementById('operator').textContent = '\u00F7';
+	// Modulus method:
+	let larger = operand1 > operand2 ? operand1 : operand2;
+	let smaller = operand1 > operand2 ? operand2 : operand1;
+
+	// Keeping the 0 check as defensive programming to prevent divide by 0 errors,
+	// EVEN THOUGH the generateOperand() method can not produce 0
+	while (larger % smaller !== 0 || smaller === 0) {
+		larger = generateOperand();
+		larger = larger > smaller ? larger : smaller;
+		smaller = larger > smaller ? smaller : larger;
+	}
+	document.getElementById('operand1').textContent = larger;
+	document.getElementById('operand2').textContent = smaller;
+
+	// Multiplication method:
+	// const result = operand1 * operand2;
+	// document.getElementById('operand1').textContent = result.toString();
+	// document.getElementById('operand2').textContent = operand1.toString();
 }
