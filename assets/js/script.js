@@ -19,7 +19,12 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		});
 	}
-
+	// Allow users to use the enter key
+	document.getElementById('answer-box').addEventListener('keydown', function (e) {
+		if (e.key === 'Enter') {
+			checkAnswer();
+		}
+	});
 	runGame('addition');
 });
 
@@ -37,6 +42,11 @@ function generateOperand() {
  * @param {string} gameType
  */
 function runGame(gameType) {
+	// Remove previous answer
+	document.getElementById('answer-box')['value'] = '';
+	// Enable focus as soon as function is called
+	document.getElementById('answer-box').focus();
+
 	const opEl1 = document.getElementById('operand1');
 	const opEl2 = document.getElementById('operand2');
 	if (!opEl1 || !opEl2) {
