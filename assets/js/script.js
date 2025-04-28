@@ -83,10 +83,12 @@ function checkAnswer() {
 	let isCorrect = userAnswer === calculatedAnswer[0];
 	if (isCorrect) {
 		alert('Hey! You got it right! :D');
+		incrementScore();
 	} else {
 		alert(
 			`Awww... you answered ${userAnswer} which isnt quite correct. The correct answer was be ${calculatedAnswer[0]}!`
 		);
+		incrementWrongAnswer();
 	}
 	runGame(calculatedAnswer[1]);
 	console.log(userAnswer);
@@ -119,9 +121,24 @@ function calculateCorrectAnswer() {
 }
 
 // Increment score/wrong answer
-function incrementScore() {}
-
-function incrementWrongAnswer() {}
+/**
+ * Gets current score from DOM and increment by 1
+ */
+function incrementScore() {
+	let oldScore = parseInt(document.getElementById('score').innerText);
+	// Important to use (++oldScore) and not (oldScore++) because JS will first
+	// write the oldScore to the DOM then increment the variable,
+	// so we will never actuall see the incremented score in the front end.
+	// Using toString() as innerText needs to be a string type.
+	document.getElementById('score').innerText = (++oldScore).toString();
+}
+/**
+ * Gets the current tally of incorrect answers from the DOM and increases it by 1
+ */
+function incrementWrongAnswer() {
+	let oldScore = parseInt(document.getElementById('incorrect').innerText);
+	document.getElementById('incorrect').innerText = (++oldScore).toString();
+}
 
 // Display questions
 function displayAdditionQuestion(opElement1, opElement2, operand1, operand2) {
