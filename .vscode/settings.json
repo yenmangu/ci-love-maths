@@ -17,5 +17,7 @@
 	"workbench.colorTheme": "Ayu Mirage Bordered",
 	"terminal.integrated.gpuAcceleration": "auto",
 	"typescript.disableAutomaticTypeAcquisition": false,
-	"javascript.validate.enable": true
+	"javascript.validate.enable": true,
+	"editor.fontFamily": "SF Mono",
+	"js/ts.implicitProjectConfig.strictNullChecks": false
 }

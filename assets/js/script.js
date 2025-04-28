@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		button.addEventListener('click', function () {
 			if (this.getAttribute('data-type') === 'submit') {
 				// Dummy code to make sure the buttons are working
-				alert('You clicked Submit!');
+				checkAnswer();
 			} else {
 				let gameType = this.getAttribute('data-type');
 				// Non null check required for jsdoc to work
@@ -58,7 +58,7 @@ function runGame(gameType) {
 	if (gameType === 'addition') {
 		displayAdditionQuestion(opEl1, opEl2, num1, num2);
 	} else if (gameType === 'subtraction') {
-		displaySubtractQuestion(num1, num2);
+		// displaySubtractQuestion(num1, num2);
 	} else if (gameType === 'multiplication') {
 	} else if (gameType === 'division') {
 	} else {
@@ -68,10 +68,55 @@ function runGame(gameType) {
 }
 
 // Check answer function
-function checkAnswer() {}
+/**
+ * Checks the answer against the first element in
+ * the returned calculateCorrectAnswer array
+ */
+function checkAnswer() {
+	if (!document.getElementById('answer-box')) {
+		throw 'No answer box element found. Aborting!';
+	}
+	// Using square bracket notation to avoid the error arising
+	// from HTMLInputElement being a sub-type of HTMLElement
+	const userAnswer = parseInt(document.getElementById('answer-box')['value']);
+	let calculatedAnswer = calculateCorrectAnswer();
+	let isCorrect = userAnswer === calculatedAnswer[0];
+	if (isCorrect) {
+		alert('Hey! You got it right! :D');
+	} else {
+		alert(
+			`Awww... you answered ${userAnswer} which isnt quite correct. The correct answer was be ${calculatedAnswer[0]}!`
+		);
+	}
+	runGame(calculatedAnswer[1]);
+	console.log(userAnswer);
+}
 
 // Helper function - calculateCorrectAnswer
-function calculateCorrectAnswer() {}
+/**
+ * Gets the oeprands (numbers) and the operator
+ * directly from the DOM and returns the correct answer
+ * @returns {[number,string]}
+ */
+function calculateCorrectAnswer() {
+	let operand1 = document.getElementById('operand1')?.innerText;
+	let operand2 = document.getElementById('operand2')?.innerText;
+	let operator = document.getElementById('operator')?.innerText;
+	if (!operand1 && !operand2) {
+		throw 'Cannot find operand(s). Aborting';
+	}
+	if (typeof operand1 !== 'string' || typeof operand2 !== 'string') {
+		throw 'Type of operand(s) must be string';
+	}
+	let intOp1 = parseInt(operand1);
+	let intOp2 = parseInt(operand2);
+	if (operator === '+') {
+		return [intOp1 + intOp2, 'addition'];
+	} else {
+		alert(`Unimplemented operator ${operator}`);
+		throw `Unimplemented operator ${operator}. Aborting!`;
+	}
+}
 
 // Increment score/wrong answer
 function incrementScore() {}
@@ -83,6 +128,9 @@ function displayAdditionQuestion(opElement1, opElement2, operand1, operand2) {
 	opElement1.textContent = operand1;
 	opElement2.textContent = operand2;
 	const operator = document.getElementById('operator');
+	if (!operator) {
+		throw "Cannot find 'operator'. Aborting ";
+	}
 	operator.textContent = '+';
 }
 
