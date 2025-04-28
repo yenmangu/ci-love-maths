@@ -15,5 +15,7 @@
 	},
 	"files.autoSave": "off",
 	"workbench.colorTheme": "Ayu Mirage Bordered",
-	"terminal.integrated.gpuAcceleration": "auto"
+	"terminal.integrated.gpuAcceleration": "auto",
+	"typescript.disableAutomaticTypeAcquisition": false,
+	"javascript.validate.enable": true
 }
